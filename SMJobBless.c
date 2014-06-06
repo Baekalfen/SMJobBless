@@ -46,8 +46,9 @@ int readMessage(int fd, struct SMJobBlessMessage * message) {
         return 1;
     }
     if (readBytes(1, fd, &(message->command))) return 1;
-    if (readBytes(1, fd, &(message->dataSize))) return 1;
-    return readBytes(message->dataSize, fd, message->data);
+    if (readBytes(1, fd, &(message->dataSizeLo))) return 1;
+    if (readBytes(1, fd, &(message->dataSizeHi))) return 1;
+    return readBytes(getDataSize(message), fd, message->data);
 }
 
 

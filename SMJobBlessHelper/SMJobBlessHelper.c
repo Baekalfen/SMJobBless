@@ -164,25 +164,51 @@ int respondToRequests() {
         struct SMJobBlessMessage messageIn, messageOut;
         if (readMessage(connection_fd, &messageIn)) break;
         initMessage(messageOut, messageIn.command);
+//        syslog(LOG_EMERG, "Message:");
+//        syslog(LOG_EMERG, messageIn.data);
         switch (messageIn.command) {
             case SMJobBless_Version:
-                messageOut.dataSize = 3;
+                setDataSize(&messageOut,3);
                 messageOut.data[0] = kVersionPart1;
                 messageOut.data[1] = kVersionPart2;
                 messageOut.data[2] = kVersionPart3;
                 break;
                 
-            case SMJobBless_PID: {
-                int pid = getpid();
-                messageOut.dataSize = sizeof(pid);
-                memcpy(messageOut.data, &pid, messageOut.dataSize);
+            case SMJobBless_CMD: {
+                syslog(LOG_EMERG, "Running");
+                FILE *fp;
+                
+                /* Open the command for reading. */
+                fp = popen(messageIn.data, "r");
+                if (fp == NULL) {
+                    printf("Failed to run command\n");
+                    
+                }
+                
+                char path[8192];
+                int maxTempMem = sizeof(path);
+                char readChar;
+                int i=0;
+                while((readChar = fgetc(fp)) != EOF && i<maxTempMem-1){
+                    path[i] = readChar;
+                    i++;
+                }
+                
+//                unsigned int num = (int)strstr(path,"Opg1Benja.tex") - (int)path;
+                setDataSize(&messageOut,sizeof(messageOut.data));
+//                memcpy(messageOut.data, path+num, getDataSize(&messageOut));
+                memcpy(messageOut.data, path, getDataSize(&messageOut));
+                memcpy(messageOut.data+getDataSize(&messageOut)-1, "\0", 1);
+                syslog(LOG_EMERG, "a");
+                /* close */
+                pclose(fp);
                 break;
             }
             default:
                 syslog(LOG_NOTICE, "Unknown command: %hhd\n", messageIn.command);
                 char* message = "Unknown command!";
                 messageOut.command = SMJobBless_Error;
-                messageOut.dataSize = strlen(message) + 1;    // add trailing \0
+                setDataSize(&messageOut,strlen(message) + 1);    // add trailing \0
                 strcpy((char *) messageOut.data, message);
                 break;
         }

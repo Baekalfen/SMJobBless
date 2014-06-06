@@ -149,11 +149,13 @@ bool isCurrentVersion() {
 - (IBAction)poke:(id)sender;
 {
     struct SMJobBlessMessage messageOut, messageIn;
-    initMessage(messageOut, SMJobBless_PID);
+    initMessage(messageOut, SMJobBless_CMD);
+    memcpy(messageOut.data, "/bin/ls -la /etc/",18);
+    setDataSize(&messageOut, 18);
     if (sendMessage(&messageOut, &messageIn)) exit(1);
-    int pid;
-    memcpy(&pid, messageIn.data, sizeof(pid));
-    NSLog(@"helper PID is %i", pid);
+    char buffer[8192];
+    memcpy(&buffer, messageIn.data, getDataSize(&messageIn));
+    NSLog(@"Message:%s", buffer);
 }
 
 @end
