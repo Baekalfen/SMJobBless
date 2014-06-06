@@ -1,3 +1,5 @@
+.DS_Store
 build/
 SMJobBless.xcodeproj/xcuserdata/
 SMJobBless.xcodeproj/project.xcworkspace/xcuserdata/
+SMJobBless.xcodeproj/project.xcworkspace/xcshareddata/
