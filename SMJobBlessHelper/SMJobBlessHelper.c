@@ -194,9 +194,7 @@ int respondToRequests() {
                     i++;
                 }
                 
-//                unsigned int num = (int)strstr(path,"Opg1Benja.tex") - (int)path;
                 setDataSize(&messageOut,sizeof(messageOut.data));
-//                memcpy(messageOut.data, path+num, getDataSize(&messageOut));
                 memcpy(messageOut.data, path, getDataSize(&messageOut));
                 memcpy(messageOut.data+getDataSize(&messageOut)-1, "\0", 1);
                 syslog(LOG_EMERG, "a");

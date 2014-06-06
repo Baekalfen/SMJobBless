@@ -4,6 +4,10 @@ The "hack" or what you might call it, uses 2 chars as data size on the messages 
 
 Apart from that, the helper will execute whatever shell instruction it gets send.
 
+A little side note: If you mess up the helper, it can be removed by:
+sudo rm /var/run/com.apple.SMJobBlessHelper.socket
+sudo rm /Library/PrivilegedHelperTools/com.apple.bsd.SMJobBlessHelper
+
 ------------------------------------
 
 Read Me About SMJobBless
