@@ -1,3 +1,11 @@
+Baekalfen:
+This fork can send larger messages than 255 chars (jgfoster version). The limit is now 65535 chars. The code might not be best pratice or optimized very well, but it works as is. 
+The "hack" or what you might call it, uses 2 chars as data size on the messages instead of just one. The 2 chars are converted to and from an integer using getDataSize() and setDataSize().
+
+Apart from that, the helper will execute whatever shell instruction it gets send.
+
+------------------------------------
+
 Read Me About SMJobBless
 ====================================
 This Xcode project is an extension of the SMJobBless project found at http://developer.apple.com/library/mac/#samplecode/SMJobBless/Introduction/Intro.html. (The previous ReadMe.txt is now found at ReadMe2.txt.) The original sample code installs a helper tool but does not actually use it. Setting up inter-process communication is non-trivial, but left as an exercise for the reader. Based on various resources (including https://developer.apple.com/library/mac/#samplecode/SampleD/Introduction/Intro.html), I've expanded SMJobBless so that it actually communicates with the helper.
